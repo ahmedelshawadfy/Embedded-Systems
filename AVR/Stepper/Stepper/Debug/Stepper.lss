@@ -1,0 +1,159 @@
+
+Stepper.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .text         000000e6  00000000  00000000  00000054  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  1 .comment      00000030  00000000  00000000  0000013a  2**0
+                  CONTENTS, READONLY
+  2 .debug_aranges 00000068  00000000  00000000  0000016a  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  3 .debug_info   000008d6  00000000  00000000  000001d2  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  4 .debug_abbrev 000001be  00000000  00000000  00000aa8  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  5 .debug_line   0000033b  00000000  00000000  00000c66  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  6 .debug_frame  00000098  00000000  00000000  00000fa4  2**2
+                  CONTENTS, READONLY, DEBUGGING
+  7 .debug_str    000001b5  00000000  00000000  0000103c  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  8 .debug_loc    00000164  00000000  00000000  000011f1  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  9 .debug_ranges 00000048  00000000  00000000  00001355  2**0
+                  CONTENTS, READONLY, DEBUGGING
+
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	0c 94 34 00 	jmp	0x68	; 0x68 <__ctors_end>
+   4:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+   8:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+   c:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  10:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  14:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  18:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  1c:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  20:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  24:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  28:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  2c:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  30:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  34:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  38:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  3c:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  40:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  44:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  48:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  4c:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  50:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  54:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  58:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  5c:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  60:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  64:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+
+00000068 <__ctors_end>:
+  68:	11 24       	eor	r1, r1
+  6a:	1f be       	out	0x3f, r1	; 63
+  6c:	cf ef       	ldi	r28, 0xFF	; 255
+  6e:	d8 e0       	ldi	r29, 0x08	; 8
+  70:	de bf       	out	0x3e, r29	; 62
+  72:	cd bf       	out	0x3d, r28	; 61
+  74:	0e 94 40 00 	call	0x80	; 0x80 <main>
+  78:	0c 94 71 00 	jmp	0xe2	; 0xe2 <_exit>
+
+0000007c <__bad_interrupt>:
+  7c:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
+
+00000080 <main>:
+
+int main(void){
+	
+	while(1)
+	{
+		stepper_CW(&DDRC,&PORTC,0x00);
+  80:	40 e0       	ldi	r20, 0x00	; 0
+  82:	68 e2       	ldi	r22, 0x28	; 40
+  84:	70 e0       	ldi	r23, 0x00	; 0
+  86:	87 e2       	ldi	r24, 0x27	; 39
+  88:	90 e0       	ldi	r25, 0x00	; 0
+  8a:	0e 94 4a 00 	call	0x94	; 0x94 <stepper_CW>
+		PORTC |= 0x00;              
+  8e:	88 b1       	in	r24, 0x08	; 8
+  90:	88 b9       	out	0x08, r24	; 8
+  92:	f6 cf       	rjmp	.-20     	; 0x80 <main>
+
+00000094 <stepper_CW>:
+#define F_CPU 16000000UL
+
+
+
+void stepper_CW(uint8_t volatile *ddr, uint8_t volatile *port, uint8_t pins)
+{
+  94:	fb 01       	movw	r30, r22
+	#define DELAY 200
+	for(int x = 0; x < 1; x++){	
+	*ddr = 0x0f;
+  96:	2f e0       	ldi	r18, 0x0F	; 15
+  98:	dc 01       	movw	r26, r24
+  9a:	2c 93       	st	X, r18
+	*port = pins;    //Enable output on all of the B pins 
+  9c:	40 83       	st	Z, r20
+	*port = BLUE;   //1st coil
+  9e:	81 e0       	ldi	r24, 0x01	; 1
+  a0:	80 83       	st	Z, r24
+	#else
+		//round up by default
+		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
+	#endif
+
+	__builtin_avr_delay_cycles(__ticks_dc);
+  a2:	8f e4       	ldi	r24, 0x4F	; 79
+  a4:	93 ec       	ldi	r25, 0xC3	; 195
+  a6:	01 97       	sbiw	r24, 0x01	; 1
+  a8:	f1 f7       	brne	.-4      	; 0xa6 <stepper_CW+0x12>
+  aa:	00 c0       	rjmp	.+0      	; 0xac <stepper_CW+0x18>
+  ac:	00 00       	nop
+	 _delay_ms(DELAY);    //delay
+	*port = BLACK;  //2nd coil
+  ae:	82 e0       	ldi	r24, 0x02	; 2
+  b0:	80 83       	st	Z, r24
+  b2:	af e4       	ldi	r26, 0x4F	; 79
+  b4:	b3 ec       	ldi	r27, 0xC3	; 195
+  b6:	11 97       	sbiw	r26, 0x01	; 1
+  b8:	f1 f7       	brne	.-4      	; 0xb6 <stepper_CW+0x22>
+  ba:	00 c0       	rjmp	.+0      	; 0xbc <stepper_CW+0x28>
+  bc:	00 00       	nop
+	 _delay_ms(DELAY);    //delay
+	*port = RED;    //3rd coil
+  be:	84 e0       	ldi	r24, 0x04	; 4
+  c0:	80 83       	st	Z, r24
+  c2:	8f e4       	ldi	r24, 0x4F	; 79
+  c4:	93 ec       	ldi	r25, 0xC3	; 195
+  c6:	01 97       	sbiw	r24, 0x01	; 1
+  c8:	f1 f7       	brne	.-4      	; 0xc6 <stepper_CW+0x32>
+  ca:	00 c0       	rjmp	.+0      	; 0xcc <stepper_CW+0x38>
+  cc:	00 00       	nop
+	 _delay_ms(DELAY);     //delay
+	*port = YELLOW; //4th coil
+  ce:	88 e0       	ldi	r24, 0x08	; 8
+  d0:	80 83       	st	Z, r24
+  d2:	af e4       	ldi	r26, 0x4F	; 79
+  d4:	b3 ec       	ldi	r27, 0xC3	; 195
+  d6:	11 97       	sbiw	r26, 0x01	; 1
+  d8:	f1 f7       	brne	.-4      	; 0xd6 <stepper_CW+0x42>
+  da:	00 c0       	rjmp	.+0      	; 0xdc <stepper_CW+0x48>
+  dc:	00 00       	nop
+	 _delay_ms(DELAY);     //delay
+	}
+	*port = pins;
+  de:	40 83       	st	Z, r20
+  e0:	08 95       	ret
+
+000000e2 <_exit>:
+  e2:	f8 94       	cli
+
+000000e4 <__stop_program>:
+  e4:	ff cf       	rjmp	.-2      	; 0xe4 <__stop_program>

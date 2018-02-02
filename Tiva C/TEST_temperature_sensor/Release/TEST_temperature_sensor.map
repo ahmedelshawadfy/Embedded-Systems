@@ -1,0 +1,252 @@
+******************************************************************************
+                  TI ARM Linker PC v16.9.6                     
+******************************************************************************
+>> Linked Mon Nov 27 14:38:57 2017
+
+OUTPUT FILE NAME:   <TEST_temperature_sensor.out>
+ENTRY POINT SYMBOL: "_c_int00"  address: 00000899
+
+
+MEMORY CONFIGURATION
+
+         name            origin    length      used     unused   attr    fill
+----------------------  --------  ---------  --------  --------  ----  --------
+  FLASH                 00000000   00040000  00000a64  0003f59c  R  X
+  SRAM                  20000000   00008000  00000220  00007de0  RW X
+
+
+SEGMENT ALLOCATION MAP
+
+run origin  load origin   length   init length attrs members
+----------  ----------- ---------- ----------- ----- -------
+00000000    00000000    00000a64   00000a64    r-x
+  00000000    00000000    0000026c   0000026c    r-- .intvecs
+  0000026c    0000026c    000007d4   000007d4    r-x .text
+  00000a40    00000a40    00000024   00000024    r-- .cinit
+20000000    20000000    00000220   00000000    rw-
+  20000000    20000000    00000200   00000000    rw- .stack
+  20000200    20000200    00000020   00000000    rw- .data
+
+
+SECTION ALLOCATION MAP
+
+ output                                  attributes/
+section   page    origin      length       input sections
+--------  ----  ----------  ----------   ----------------
+.intvecs   0    00000000    0000026c     
+                  00000000    0000026c     tm4c123gh6pm_startup_ccs.obj (.intvecs)
+
+.text      0    0000026c    000007d4     
+                  0000026c    00000204     main.obj (.text)
+                  00000470    000001b6     rtsv7M4_T_le_v4SPD16_eabi.lib : fd_add_t2.obj (.text)
+                  00000626    000000fc                                   : fd_mul_t2.obj (.text)
+                  00000722    0000009c                                   : memcpy_t2.obj (.text)
+                  000007be    00000002                                   : mpu_init.obj (.text)
+                  000007c0    00000070                                   : autoinit.obj (.text)
+                  00000830    00000068                                   : copy_decompress_lzss.obj (.text:decompress:lzss)
+                  00000898    00000054                                   : boot.obj (.text)
+                  000008ec    00000054                                   : exit.obj (.text)
+                  00000940    0000004c                                   : cpy_tbl.obj (.text)
+                  0000098c    00000048                                   : fd_toi_t2.obj (.text)
+                  000009d4    00000020                                   : u_tofd_t2.obj (.text)
+                  000009f4    00000018                                   : args_main.obj (.text)
+                  00000a0c    00000014                                   : _lock.obj (.text)
+                  00000a20    0000000e                                   : copy_decompress_none.obj (.text:decompress:none)
+                  00000a2e    0000000c     tm4c123gh6pm_startup_ccs.obj (.text)
+                  00000a3a    00000004     rtsv7M4_T_le_v4SPD16_eabi.lib : pre_init.obj (.text)
+                  00000a3e    00000002                                   : startup.obj (.text)
+
+.cinit     0    00000a40    00000024     
+                  00000a40    00000011     (.cinit..data.load) [load image, compression = lzss]
+                  00000a51    00000003     --HOLE-- [fill = 0]
+                  00000a54    00000008     (__TI_handler_table)
+                  00000a5c    00000008     (__TI_cinit_table)
+
+.init_array 
+*          0    00000000    00000000     UNINITIALIZED
+
+.stack     0    20000000    00000200     UNINITIALIZED
+                  20000000    00000200     --HOLE--
+
+.data      0    20000200    00000020     UNINITIALIZED
+                  20000200    0000000c     rtsv7M4_T_le_v4SPD16_eabi.lib : exit.obj (.data:$O1$$)
+                  2000020c    00000008                                   : _lock.obj (.data:$O1$$)
+                  20000214    00000008     main.obj (.data)
+                  2000021c    00000004     rtsv7M4_T_le_v4SPD16_eabi.lib : stkdepth_vars.obj (.data)
+
+MODULE SUMMARY
+
+       Module                         code   ro data   rw data
+       ------                         ----   -------   -------
+    .\
+       tm4c123gh6pm_startup_ccs.obj   12     620       0      
+       main.obj                       516    0         8      
+    +--+------------------------------+------+---------+---------+
+       Total:                         528    620       8      
+                                                              
+    C:\ti\ccsv7\tools\compiler\ti-cgt-arm_16.9.6.LTS\lib\rtsv7M4_T_le_v4SPD16_eabi.lib
+       fd_add_t2.obj                  438    0         0      
+       fd_mul_t2.obj                  252    0         0      
+       memcpy_t2.obj                  156    0         0      
+       autoinit.obj                   112    0         0      
+       copy_decompress_lzss.obj       104    0         0      
+       exit.obj                       84     0         12     
+       boot.obj                       84     0         0      
+       cpy_tbl.obj                    76     0         0      
+       fd_toi_t2.obj                  72     0         0      
+       u_tofd_t2.obj                  32     0         0      
+       _lock.obj                      20     0         8      
+       args_main.obj                  24     0         0      
+       copy_decompress_none.obj       14     0         0      
+       pre_init.obj                   4      0         0      
+       stkdepth_vars.obj              0      0         4      
+       mpu_init.obj                   2      0         0      
+       startup.obj                    2      0         0      
+    +--+------------------------------+------+---------+---------+
+       Total:                         1476   0         24     
+                                                              
+       Stack:                         0      0         512    
+       Linker Generated:              0      33        0      
+    +--+------------------------------+------+---------+---------+
+       Grand Total:                   2004   653       544    
+
+
+LINKER GENERATED COPY TABLES
+
+__TI_cinit_table @ 00000a5c records: 1, size/record: 8, table size: 8
+	.data: load addr=00000a40, load size=00000011 bytes, run addr=20000200, run size=00000020 bytes, compression=lzss
+
+
+LINKER GENERATED HANDLER TABLE
+
+__TI_handler_table @ 00000a54 records: 2, size/record: 4, table size: 8
+	index: 0, handler: __TI_decompress_lzss
+	index: 1, handler: __TI_decompress_none
+
+
+GLOBAL SYMBOLS: SORTED ALPHABETICALLY BY Name 
+
+address   name                           
+-------   ----                           
+000008ed  C$$EXIT                        
+000002db  PLL_init                       
+00000a2f  ResetISR                       
+UNDEFED   SHT$$INIT_ARRAY$$Base          
+UNDEFED   SHT$$INIT_ARRAY$$Limit         
+20000200  __STACK_END                    
+00000200  __STACK_SIZE                   
+20000200  __STACK_TOP                    
+00000a5c  __TI_CINIT_Base                
+00000a64  __TI_CINIT_Limit               
+00000a54  __TI_Handler_Table_Base        
+00000a5c  __TI_Handler_Table_Limit       
+000007c1  __TI_auto_init                 
+20000200  __TI_cleanup_ptr               
+00000831  __TI_decompress_lzss           
+00000a21  __TI_decompress_none           
+20000204  __TI_dtors_ptr                 
+20000208  __TI_enable_exit_profile_output
+ffffffff  __TI_pprof_out_hndl            
+ffffffff  __TI_prof_data_size            
+ffffffff  __TI_prof_data_start           
+00000000  __TI_static_base__             
+0000098d  __aeabi_d2iz                   
+0000047b  __aeabi_dadd                   
+00000627  __aeabi_dmul                   
+00000471  __aeabi_dsub                   
+00000723  __aeabi_memcpy                 
+00000723  __aeabi_memcpy4                
+00000723  __aeabi_memcpy8                
+000009d5  __aeabi_ui2d                   
+ffffffff  __binit__                      
+ffffffff  __c_args__                     
+000007bf  __mpu_init                     
+20000000  __stack                        
+000009f5  _args_main                     
+00000899  _c_int00                       
+2000020c  _lock                          
+00000a1b  _nop                           
+00000a13  _register_lock                 
+00000a0d  _register_unlock               
+00000a3f  _system_post_cinit             
+00000a3b  _system_pre_init               
+20000210  _unlock                        
+000008f1  abort                          
+000003d7  adc                            
+0000032f  adc_init                       
+ffffffff  binit                          
+00000941  copy_in                        
+20000218  delay                          
+000008f9  exit                           
+00000000  g_pfnVectors                   
+0000038d  main                           
+2000021c  main_func_sp                   
+00000723  memcpy                         
+00000295  portF_init                     
+20000214  temperature                    
+0000026d  wTimer0_init                   
+
+
+GLOBAL SYMBOLS: SORTED BY Symbol Address 
+
+address   name                           
+-------   ----                           
+00000000  __TI_static_base__             
+00000000  g_pfnVectors                   
+00000200  __STACK_SIZE                   
+0000026d  wTimer0_init                   
+00000295  portF_init                     
+000002db  PLL_init                       
+0000032f  adc_init                       
+0000038d  main                           
+000003d7  adc                            
+00000471  __aeabi_dsub                   
+0000047b  __aeabi_dadd                   
+00000627  __aeabi_dmul                   
+00000723  __aeabi_memcpy                 
+00000723  __aeabi_memcpy4                
+00000723  __aeabi_memcpy8                
+00000723  memcpy                         
+000007bf  __mpu_init                     
+000007c1  __TI_auto_init                 
+00000831  __TI_decompress_lzss           
+00000899  _c_int00                       
+000008ed  C$$EXIT                        
+000008f1  abort                          
+000008f9  exit                           
+00000941  copy_in                        
+0000098d  __aeabi_d2iz                   
+000009d5  __aeabi_ui2d                   
+000009f5  _args_main                     
+00000a0d  _register_unlock               
+00000a13  _register_lock                 
+00000a1b  _nop                           
+00000a21  __TI_decompress_none           
+00000a2f  ResetISR                       
+00000a3b  _system_pre_init               
+00000a3f  _system_post_cinit             
+00000a54  __TI_Handler_Table_Base        
+00000a5c  __TI_CINIT_Base                
+00000a5c  __TI_Handler_Table_Limit       
+00000a64  __TI_CINIT_Limit               
+20000000  __stack                        
+20000200  __STACK_END                    
+20000200  __STACK_TOP                    
+20000200  __TI_cleanup_ptr               
+20000204  __TI_dtors_ptr                 
+20000208  __TI_enable_exit_profile_output
+2000020c  _lock                          
+20000210  _unlock                        
+20000214  temperature                    
+20000218  delay                          
+2000021c  main_func_sp                   
+ffffffff  __TI_pprof_out_hndl            
+ffffffff  __TI_prof_data_size            
+ffffffff  __TI_prof_data_start           
+ffffffff  __binit__                      
+ffffffff  __c_args__                     
+ffffffff  binit                          
+UNDEFED   SHT$$INIT_ARRAY$$Base          
+UNDEFED   SHT$$INIT_ARRAY$$Limit         
+
+[57 symbols]

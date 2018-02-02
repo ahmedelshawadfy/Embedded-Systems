@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Atmel Studio Solution File, Format Version 11.00
+Project("{54F91283-7BC4-4236-8FF9-10F437C3AD48}") = "ADC", "GccApplication1\ADC.cproj", "{C1D6A681-495B-4240-930B-3AB9281C2B7F}"
+EndProject
+Project("{54F91283-7BC4-4236-8FF9-10F437C3AD48}") = "adc_demo", "..\..\..\..\Desktop\LICENCED_TO_ahmed_ONLY_AS6_M32_ADC_DEMO\AS6_M32_ADC_DEMO\source\adc_demo\adc_demo\adc_demo.cproj", "{867E3469-F596-4058-9A06-773701CC4D40}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|AVR = Debug|AVR
+		Release|AVR = Release|AVR
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C1D6A681-495B-4240-930B-3AB9281C2B7F}.Debug|AVR.ActiveCfg = Debug|AVR
+		{C1D6A681-495B-4240-930B-3AB9281C2B7F}.Debug|AVR.Build.0 = Debug|AVR
+		{C1D6A681-495B-4240-930B-3AB9281C2B7F}.Release|AVR.ActiveCfg = Release|AVR
+		{C1D6A681-495B-4240-930B-3AB9281C2B7F}.Release|AVR.Build.0 = Release|AVR
+		{867E3469-F596-4058-9A06-773701CC4D40}.Debug|AVR.ActiveCfg = Debug|AVR
+		{867E3469-F596-4058-9A06-773701CC4D40}.Debug|AVR.Build.0 = Debug|AVR
+		{867E3469-F596-4058-9A06-773701CC4D40}.Release|AVR.ActiveCfg = Release|AVR
+		{867E3469-F596-4058-9A06-773701CC4D40}.Release|AVR.Build.0 = Release|AVR
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

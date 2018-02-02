@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<DoxySettings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <SettingsFile>C:\Users\HP\Documents\Atmel Studio\7.0\ZuCar\ZuCar\doxySettings.xml</SettingsFile>
+  <ProjectName>ZuCar</ProjectName>
+  <DoxyExePath>C:\Program Files\doxygen\bin\doxygen.exe</DoxyExePath>
+  <UseDefaultSettings>true</UseDefaultSettings>
+  <GenerateAsPartOfBuild>false</GenerateAsPartOfBuild>
+  <ConfigFilePath>C:\Users\HP\Documents\Atmel Studio\7.0\ZuCar\ZuCar\doxyfile</ConfigFilePath>
+  <OutputDirPath>C:\Users\HP\Documents\Atmel Studio\7.0\ZuCar\ZuCar\doxygen</OutputDirPath>
+  <Excluded>C:\Users\HP\Documents\Atmel Studio\7.0\ZuCar\ZuCar\DC_motor.h</Excluded>
+  <Excluded>C:\Users\HP\Documents\Atmel Studio\7.0\ZuCar\ZuCar\Servo.h</Excluded>
+  <Excluded>C:\Users\HP\Documents\Atmel Studio\7.0\ZuCar\ZuCar\UART.h</Excluded>
+  <ShowErrorsAndWarnings>false</ShowErrorsAndWarnings>
+</DoxySettings>

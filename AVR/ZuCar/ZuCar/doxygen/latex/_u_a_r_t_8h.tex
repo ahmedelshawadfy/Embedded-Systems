@@ -1,0 +1,555 @@
+\hypertarget{_u_a_r_t_8h}{}\section{U\+A\+R\+T.\+h File Reference}
+\label{_u_a_r_t_8h}\index{U\+A\+R\+T.\+h@{U\+A\+R\+T.\+h}}
+
+
+this is the library to control the serial communication between Tiva C and other microcontrollers  
+
+
+{\ttfamily \#include \char`\"{}registers\+\_\+config.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}std\+\_\+types.\+h\char`\"{}}\newline
+Include dependency graph for U\+A\+R\+T.\+h\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=260pt]{_u_a_r_t_8h__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=198pt]{_u_a_r_t_8h__dep__incl}
+\end{center}
+\end{figure}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{_u_a_r_t_8h_afbfe9a19c497ec9e0586c7e6feb4897a}{uart\+\_\+init} (uint8 uart\+\_\+num)
+\begin{DoxyCompactList}\small\item\em U\+A\+RT initialization \+: ~\newline
+Tiva c has 8 channels for uart so the variable uart\+\_\+num is the channel number. \end{DoxyCompactList}\item 
+void \hyperlink{_u_a_r_t_8h_ab0d6a19096405d3f0e1a47da77093c59}{uart\+\_\+send\+\_\+byte} (uint8 uart\+\_\+num, uint8 data)
+\begin{DoxyCompactList}\small\item\em send a byte to other device \+: ~\newline
+variable uart\+\_\+num for channel number specified before ~\newline
+variable data for the desired data to be sent ~\newline
+\end{DoxyCompactList}\item 
+uint8 \hyperlink{_u_a_r_t_8h_a6672b250ddc566fa64e11ffb6d264048}{uart\+\_\+recieve\+\_\+byte} (uint8 uart\+\_\+num)
+\begin{DoxyCompactList}\small\item\em receive a byte from other device \+: ~\newline
+variable uart\+\_\+num is for the channel number specified before \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+this is the library to control the serial communication between Tiva C and other microcontrollers 
+
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{_u_a_r_t_8h_afbfe9a19c497ec9e0586c7e6feb4897a}\label{_u_a_r_t_8h_afbfe9a19c497ec9e0586c7e6feb4897a}} 
+\index{U\+A\+R\+T.\+h@{U\+A\+R\+T.\+h}!uart\+\_\+init@{uart\+\_\+init}}
+\index{uart\+\_\+init@{uart\+\_\+init}!U\+A\+R\+T.\+h@{U\+A\+R\+T.\+h}}
+\subsubsection{\texorpdfstring{uart\+\_\+init()}{uart\_init()}}
+{\footnotesize\ttfamily void uart\+\_\+init (\begin{DoxyParamCaption}\item[{uint8}]{uart\+\_\+num }\end{DoxyParamCaption})}
+
+
+
+U\+A\+RT initialization \+: ~\newline
+Tiva c has 8 channels for uart so the variable uart\+\_\+num is the channel number. 
+
+
+\begin{DoxyCode}
+      \textcolor{keywordflow}{if}(uart\_num == 0)
+\{
+    \textcolor{keyword}{volatile} uint32 delay;
+    \textcolor{comment}{/* Assumes a 16 MHz bus clock, creates 9600 baud rate */}
+
+    \textcolor{comment}{/* Enable and provide a clock to UART module in Run mode */}
+    SYSCTL\_RCGC1\_R |=(1<<uart\_num);
+
+    \textcolor{comment}{/* allow time to finish activating */}
+    delay = SYSCTL\_RCGC2\_R;
+
+    \textcolor{comment}{/* SYSCTL\_RCGCGPIO\_R enabled by function ports\_clock\_EN() for all ports */}
+
+    \textcolor{comment}{/*  disable UART */}
+    UART0\_CTL\_R &= ~(0x00000001);
+
+    \textcolor{comment}{/* Set the GPIO AFSEL bits to enable alternative function */}
+    GPIO\_PORTA\_AFSEL\_R |= 0x03 ;
+
+    \textcolor{comment}{/* Configure the PMCn fields in the GPIOPCTL register to assign the UART signals */}
+    GPIO\_PORTA\_PCTL\_R = (GPIO\_PORTA\_PCTL\_R & 0xFFFFFF00) | (0x00000011) ;
+
+
+
+    \textcolor{comment}{/* IBRD = int(16,000,000/(16*9600)) = int(104.1666667) */}
+    UART0\_IBRD\_R = 104;
+
+    \textcolor{comment}{/* UARTFBRD[DIVFRAC] = integer(0.166666667 * 64 + 0.5) = int(11.1666) = 11 */}
+    UART0\_FBRD\_R = 11;
+
+    \textcolor{comment}{/*  8 bit, no parity bits, one stop, disable FIFOs */}
+    UART0\_LCRH\_R |= 0x00000060;
+
+    \textcolor{comment}{/* enable UART */}
+    UART0\_CTL\_R |= 0x00000301;
+
+    \textcolor{comment}{/* The digital functions for the corresponding pin are enabled */}
+    GPIO\_PORTA\_DEN\_R |= 0X03;
+
+    \textcolor{comment}{/* disable analog on pins */}
+    GPIO\_PORTA\_AMSEL\_R &= ~(0x03);
+\}
+
+\textcolor{keywordflow}{else} \textcolor{keywordflow}{if}(uart\_num == 1)
+\{
+    \textcolor{keyword}{volatile} uint32 delay;
+    \textcolor{comment}{/* Assumes a 80 MHz bus clock, creates 9600 baud rate */}
+
+    \textcolor{comment}{/* Enable and provide a clock to UART module in Run mode */}
+    SYSCTL\_RCGC1\_R |=(1<<uart\_num);
+
+    \textcolor{comment}{/* allow time to finish activating */}
+    delay = SYSCTL\_RCGC2\_R;
+
+    \textcolor{comment}{/* SYSCTL\_RCGCGPIO\_R enabled by function ports\_clock\_EN() for all ports */}
+
+    \textcolor{comment}{/*  disable UART */}
+    UART1\_CTL\_R &= ~(0x00000001);
+
+    \textcolor{comment}{/* Set the GPIO AFSEL bits to enable alt funct */}
+    GPIO\_PORTB\_AFSEL\_R |= 0x03 ;
+
+    \textcolor{comment}{/* Configure the PMCn fields in the GPIOPCTL register to assign the UART signals */}
+    GPIO\_PORTB\_PCTL\_R = (GPIO\_PORTA\_PCTL\_R & 0xFFFFFF00) | (0x00000011) ;
+
+
+
+    \textcolor{comment}{/* IBRD = int(16,000,000/(16*9600)) = int(104.1666667) */}
+    UART1\_IBRD\_R = 104;
+
+    \textcolor{comment}{/* UARTFBRD[DIVFRAC] = integer(0.166666667 * 64 + 0.5) = int(11.1666) = 11 */}
+    UART1\_FBRD\_R = 11;
+
+    \textcolor{comment}{/*  8 bit, no parity bits, one stop, disable FIFOs */}
+    UART1\_LCRH\_R |= 0x00000060;
+
+    \textcolor{comment}{/* enable UART */}
+    UART1\_CTL\_R |= 0x00000301;
+
+    \textcolor{comment}{/* The digital functions for the corresponding pin are enabled */}
+    GPIO\_PORTB\_DEN\_R |= 0X03;
+
+    \textcolor{comment}{/* disable analog on pins */}
+    GPIO\_PORTB\_AMSEL\_R &= ~(0x03);
+
+\}
+\textcolor{keywordflow}{else} \textcolor{keywordflow}{if}(uart\_num == 2)
+\{
+    \textcolor{keyword}{volatile} uint32 delay;
+    \textcolor{comment}{/* Assumes a 80 MHz bus clock, creates 9600 baud rate */}
+
+    \textcolor{comment}{/* Enable and provide a clock to UART module in Run mode */}
+    SYSCTL\_RCGC1\_R |=(1<<uart\_num);
+
+    \textcolor{comment}{/* allow time to finish activating */}
+    delay = SYSCTL\_RCGC2\_R;
+
+    \textcolor{comment}{/* SYSCTL\_RCGCGPIO\_R enabled by function ports\_clock\_EN() for all ports */}
+
+    \textcolor{comment}{/*  disable UART */}
+    UART2\_CTL\_R &= ~(0x00000001);
+
+    \textcolor{comment}{/* Set the GPIO AFSEL bits to enable alternative function */}
+    GPIO\_PORTD\_AFSEL\_R |= 0xC0 ;
+
+    \textcolor{comment}{/* Configure the PMCn fields in the GPIOPCTL register to assign the UART signals */}
+    GPIO\_PORTD\_PCTL\_R = (GPIO\_PORTA\_PCTL\_R & 0x00FFFFFF) | (0x11000000) ;
+
+    \textcolor{comment}{/* IBRD = int(16,000,000/(16*9600)) = int(104.1666667) */}
+    UART2\_IBRD\_R = 104;
+
+    \textcolor{comment}{/* UARTFBRD[DIVFRAC] = integer(0.166666667 * 64 + 0.5) = int(11.1666) = 11 */}
+    UART2\_FBRD\_R = 11;
+
+    \textcolor{comment}{/*  8 bit, no parity bits, one stop, disable FIFOs */}
+    UART2\_LCRH\_R |= 0x00000060;
+
+    \textcolor{comment}{/* enable UART */}
+    UART2\_CTL\_R |= 0x00000301;
+
+    \textcolor{comment}{/* The digital functions for the corresponding pin are enabled */}
+    GPIO\_PORTD\_DEN\_R |= 0XC0;
+
+    \textcolor{comment}{/* disable analog on pins */}
+    GPIO\_PORTD\_AMSEL\_R &= ~(0xC0);
+
+\}
+
+\textcolor{keywordflow}{else} \textcolor{keywordflow}{if}(uart\_num == 3)
+\{
+    \textcolor{keyword}{volatile} uint32 delay;
+    \textcolor{comment}{/* Assumes a 80 MHz bus clock, creates 9600 baud rate */}
+
+    \textcolor{comment}{/* Enable and provide a clock to UART module in Run mode */}
+    SYSCTL\_RCGC1\_R |=(1<<uart\_num);
+
+    \textcolor{comment}{/* allow time to finish activating */}
+    delay = SYSCTL\_RCGC2\_R;
+
+    \textcolor{comment}{/* SYSCTL\_RCGCGPIO\_R enabled by function ports\_clock\_EN() for all ports */}
+
+    \textcolor{comment}{/*  disable UART */}
+    UART3\_CTL\_R &= ~(0x00000001);
+
+    \textcolor{comment}{/* Set the GPIO AFSEL bits to enable alternative function */}
+    GPIO\_PORTC\_AFSEL\_R |= 0xC0 ;
+
+    \textcolor{comment}{/* Configure the PMCn fields in the GPIOPCTL register to assign the UART signals */}
+    GPIO\_PORTC\_PCTL\_R = (GPIO\_PORTA\_PCTL\_R & 0x00FFFFFF) | (0x11000000) ;
+
+    \textcolor{comment}{/* IBRD = int(16,000,000/(16*9600)) = int(104.1666667) */}
+    UART3\_IBRD\_R = 104;
+
+    \textcolor{comment}{/* UARTFBRD[DIVFRAC] = integer(0.166666667 * 64 + 0.5) = int(11.1666) = 11 */}
+    UART3\_FBRD\_R = 11;
+
+    \textcolor{comment}{/*  8 bit, no parity bits, one stop, disable FIFOs */}
+    UART3\_LCRH\_R |= 0x00000060;
+
+    \textcolor{comment}{/* enable UART */}
+    UART3\_CTL\_R |= 0x00000301;
+
+    \textcolor{comment}{/* The digital functions for the corresponding pin are enabled */}
+    GPIO\_PORTC\_DEN\_R |= 0XC0;
+
+    \textcolor{comment}{/* disable analog on pins */}
+    GPIO\_PORTC\_AMSEL\_R &= ~(0xC0);
+
+\}
+
+\textcolor{keywordflow}{else} \textcolor{keywordflow}{if}(uart\_num == 4)
+\{
+    \textcolor{keyword}{volatile} uint32 delay;
+    \textcolor{comment}{/* Assumes a 80 MHz bus clock, creates 9600 baud rate */}
+
+    \textcolor{comment}{/* Enable and provide a clock to UART module in Run mode */}
+    SYSCTL\_RCGC1\_R |=(1<<uart\_num);
+
+    \textcolor{comment}{/* allow time to finish activating */}
+    delay = SYSCTL\_RCGC2\_R;
+
+
+    \textcolor{comment}{/* SYSCTL\_RCGCGPIO\_R enabled by function ports\_clock\_EN() for all ports */}
+
+    \textcolor{comment}{/*  disable UART */}
+    UART4\_CTL\_R &= ~(0x00000001);
+
+    \textcolor{comment}{/* Set the GPIO AFSEL bits to enable alternative function */}
+    GPIO\_PORTC\_AFSEL\_R |= 0x30 ;
+
+    \textcolor{comment}{/* Configure the PMCn fields in the GPIOPCTL register to assign the UART signals */}
+    GPIO\_PORTC\_PCTL\_R = (GPIO\_PORTA\_PCTL\_R & 0xFF00FFFF) | (0x00110000) ;
+
+    \textcolor{comment}{/* IBRD = int(16,000,000/(16*9600)) = int(104.1666667) */}
+    UART4\_IBRD\_R = 104;
+
+    \textcolor{comment}{/* UARTFBRD[DIVFRAC] = integer(0.166666667 * 64 + 0.5) = int(11.1666) = 11 */}
+    UART4\_FBRD\_R = 11;
+
+    \textcolor{comment}{/*  8 bit, no parity bits, one stop, disable FIFOs */}
+    UART4\_LCRH\_R |= 0x00000060;
+
+    \textcolor{comment}{/* enable UART */}
+    UART4\_CTL\_R |= 0x00000301;
+
+    \textcolor{comment}{/* The digital functions for the corresponding pin are enabled */}
+    GPIO\_PORTC\_DEN\_R |= 0X30;
+
+    \textcolor{comment}{/* disable analog on pins */}
+    GPIO\_PORTC\_AMSEL\_R &= ~(0x30);
+
+\}
+
+\textcolor{keywordflow}{else} \textcolor{keywordflow}{if}(uart\_num == 5)
+\{
+    \textcolor{keyword}{volatile} uint32 delay;
+    \textcolor{comment}{/* Assumes a 80 MHz bus clock, creates 9600 baud rate */}
+
+    \textcolor{comment}{/* Enable and provide a clock to UART module in Run mode */}
+    SYSCTL\_RCGC1\_R |=(1<<uart\_num);
+
+    \textcolor{comment}{/* allow time to finish activating */}
+    delay = SYSCTL\_RCGC2\_R;
+
+
+    \textcolor{comment}{/* SYSCTL\_RCGCGPIO\_R enabled by function ports\_clock\_EN() for all ports */}
+
+    \textcolor{comment}{/*  disable UART */}
+    UART5\_CTL\_R &= ~(0x00000001);
+
+    \textcolor{comment}{/* Set the GPIO AFSEL bits to enable alternative function */}
+    GPIO\_PORTE\_AFSEL\_R |= 0x03 ;
+
+    \textcolor{comment}{/* Configure the PMCn fields in the GPIOPCTL register to assign the UART signals */}
+    GPIO\_PORTE\_PCTL\_R = (GPIO\_PORTA\_PCTL\_R & 0xFFFFFF00) | (0x00000011) ;
+
+    \textcolor{comment}{/* IBRD = int(16,000,000/(16*9600)) = int(104.1666667) */}
+    UART5\_IBRD\_R = 104;
+
+    \textcolor{comment}{/* UARTFBRD[DIVFRAC] = integer(0.166666667 * 64 + 0.5) = int(11.1666) = 11 */}
+    UART5\_FBRD\_R = 11;
+
+    \textcolor{comment}{/*  8 bit, no parity bits, one stop, disable FIFOs */}
+    UART5\_LCRH\_R |= 0x00000060;
+
+    \textcolor{comment}{/* enable UART */}
+    UART5\_CTL\_R |= 0x00000301;
+
+    \textcolor{comment}{/* The digital functions for the corresponding pin are enabled */}
+    GPIO\_PORTE\_DEN\_R |= 0X03;
+
+    \textcolor{comment}{/* disable analog on pins */}
+    GPIO\_PORTE\_AMSEL\_R &= ~(0x03);
+
+\}
+
+\textcolor{keywordflow}{else} \textcolor{keywordflow}{if}(uart\_num == 6)
+\{
+    \textcolor{keyword}{volatile} uint32 delay;
+    \textcolor{comment}{/* Assumes a 80 MHz bus clock, creates 9600 baud rate */}
+
+    \textcolor{comment}{/* Enable and provide a clock to UART module in Run mode */}
+    SYSCTL\_RCGC1\_R |=(1<<uart\_num);
+
+    \textcolor{comment}{/* allow time to finish activating */}
+    delay = SYSCTL\_RCGC2\_R;
+
+    \textcolor{comment}{/* SYSCTL\_RCGCGPIO\_R enabled by function ports\_clock\_EN() for all ports */}
+
+    \textcolor{comment}{/*  disable UART */}
+    UART6\_CTL\_R &= ~(0x00000001);
+
+    \textcolor{comment}{/* Set the GPIO AFSEL bits to enable alternative function */}
+    GPIO\_PORTD\_AFSEL\_R |= 0x30 ;
+
+    \textcolor{comment}{/* Configure the PMCn fields in the GPIOPCTL register to assign the UART signals */}
+    GPIO\_PORTD\_PCTL\_R = (GPIO\_PORTA\_PCTL\_R & 0xFF00FFFF) | (0x00110000) ;
+
+    \textcolor{comment}{/* IBRD = int(16,000,000/(16*9600)) = int(104.1666667) */}
+    UART6\_IBRD\_R = 104;
+
+    \textcolor{comment}{/* UARTFBRD[DIVFRAC] = integer(0.166666667 * 64 + 0.5) = int(11.1666) = 11 */}
+    UART6\_FBRD\_R = 11;
+
+    \textcolor{comment}{/*  8 bit, no parity bits, one stop, disable FIFOs */}
+    UART6\_LCRH\_R |= 0x00000060;
+
+    \textcolor{comment}{/* enable UART */}
+    UART6\_CTL\_R |= 0x00000301;
+
+    \textcolor{comment}{/* The digital functions for the corresponding pin are enabled */}
+    GPIO\_PORTD\_DEN\_R |= 0X30;
+
+    \textcolor{comment}{/* disable analog on pins */}
+    GPIO\_PORTD\_AMSEL\_R &= ~(0x30);
+
+\}
+
+\textcolor{keywordflow}{else} \textcolor{keywordflow}{if}(uart\_num == 7)
+\{
+    \textcolor{keyword}{volatile} uint32 delay;
+    \textcolor{comment}{/* Assumes a 80 MHz bus clock, creates 9600 baud rate */}
+
+    \textcolor{comment}{/* Enable and provide a clock to UART module in Run mode */}
+    SYSCTL\_RCGC1\_R |=(1<<uart\_num);
+
+    \textcolor{comment}{/* allow time to finish activating */}
+    delay = SYSCTL\_RCGC2\_R;
+
+    \textcolor{comment}{/* SYSCTL\_RCGCGPIO\_R enabled by function ports\_clock\_EN() for all ports */}
+
+    \textcolor{comment}{/*  disable UART */}
+    UART7\_CTL\_R &= ~(0x00000001);
+
+    \textcolor{comment}{/* Set the GPIO AFSEL bits to enable alternative function */}
+    GPIO\_PORTE\_AFSEL\_R |= 0x03 ;
+
+    \textcolor{comment}{/* Configure the PMCn fields in the GPIOPCTL register to assign the UART signals */}
+    GPIO\_PORTE\_PCTL\_R = (GPIO\_PORTA\_PCTL\_R & 0xFFFFFF00) | (0x00000011) ;
+
+    \textcolor{comment}{/* IBRD = int(16,000,000/(16*9600)) = int(104.1666667) */}
+    UART7\_IBRD\_R = 104;
+
+    \textcolor{comment}{/* UARTFBRD[DIVFRAC] = integer(0.166666667 * 64 + 0.5) = int(11.1666) = 11 */}
+    UART7\_FBRD\_R = 11;
+
+    \textcolor{comment}{/*  8 bit, no parity bits, one stop, disable FIFOs */}
+    UART7\_LCRH\_R |= 0x00000060;
+
+    \textcolor{comment}{/* enable UART */}
+    UART7\_CTL\_R |= 0x00000301;
+
+    \textcolor{comment}{/* The digital functions for the corresponding pin are enabled */}
+    GPIO\_PORTE\_DEN\_R |= 0X03;
+
+    \textcolor{comment}{/* disable analog on pins */}
+    GPIO\_PORTE\_AMSEL\_R &= ~(0x03);
+
+\}
+
+
+\}
+\end{DoxyCode}
+ \mbox{\Hypertarget{_u_a_r_t_8h_a6672b250ddc566fa64e11ffb6d264048}\label{_u_a_r_t_8h_a6672b250ddc566fa64e11ffb6d264048}} 
+\index{U\+A\+R\+T.\+h@{U\+A\+R\+T.\+h}!uart\+\_\+recieve\+\_\+byte@{uart\+\_\+recieve\+\_\+byte}}
+\index{uart\+\_\+recieve\+\_\+byte@{uart\+\_\+recieve\+\_\+byte}!U\+A\+R\+T.\+h@{U\+A\+R\+T.\+h}}
+\subsubsection{\texorpdfstring{uart\+\_\+recieve\+\_\+byte()}{uart\_recieve\_byte()}}
+{\footnotesize\ttfamily uint8 uart\+\_\+recieve\+\_\+byte (\begin{DoxyParamCaption}\item[{uint8}]{uart\+\_\+num }\end{DoxyParamCaption})}
+
+
+
+receive a byte from other device \+: ~\newline
+variable uart\+\_\+num is for the channel number specified before 
+
+
+\begin{DoxyCode}
+ \{
+    \textcolor{comment}{/* function to recieve byte takes one input (uart number)}
+\textcolor{comment}{     * return recieved byte  */}
+
+    \textcolor{keywordflow}{if}(uart\_num == 0)
+    \{
+        \textcolor{comment}{/* Wait for new input ,wait until RXFE is 0 */}
+        \textcolor{keywordflow}{while}((UART0\_FR\_R & 0x0010) != 0);
+        \textcolor{keywordflow}{return} ((uint8)(UART0\_DR\_R & 0xFF)) ;
+
+    \}
+
+    \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}(uart\_num == 1)
+    \{
+        \textcolor{comment}{/* Wait for new input ,wait until RXFE is 0 */}
+        \textcolor{keywordflow}{while}((UART1\_FR\_R & 0x0010) != 0)\{\}
+        \textcolor{keywordflow}{return} ((uint8)(UART1\_DR\_R & 0xFF)) ;
+    \}
+
+    \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}(uart\_num == 2)
+    \{
+        \textcolor{comment}{/* Wait for new input ,wait until RXFE is 0 */}
+        \textcolor{keywordflow}{while}((UART2\_FR\_R & 0x0010) != 0);
+        \textcolor{keywordflow}{return} ((uint8)(UART2\_DR\_R & 0xFF)) ;
+    \}
+
+    \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}(uart\_num == 3)
+    \{
+        \textcolor{comment}{/* Wait for new input ,wait until RXFE is 0 */}
+        \textcolor{keywordflow}{while}((UART3\_FR\_R & 0x0010) != 0);
+        \textcolor{keywordflow}{return} ((uint8)(UART3\_DR\_R & 0xFF)) ;
+    \}
+
+    \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}(uart\_num == 4)
+    \{
+        \textcolor{comment}{/* Wait for new input ,wait until RXFE is 0 */}
+        \textcolor{keywordflow}{while}((UART4\_FR\_R & 0x0010) != 0);
+        \textcolor{keywordflow}{return} ((uint8)(UART4\_DR\_R & 0xFF)) ;
+    \}
+
+    \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}(uart\_num == 5)
+    \{
+        \textcolor{comment}{/* Wait for new input ,wait until RXFE is 0 */}
+        \textcolor{keywordflow}{while}((UART5\_FR\_R & 0x0010) != 0);
+        \textcolor{keywordflow}{return} ((uint8)(UART5\_DR\_R & 0xFF)) ;
+    \}
+
+    \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}(uart\_num == 6)
+    \{
+        \textcolor{comment}{/* Wait for new input ,wait until RXFE is 0 */}
+        \textcolor{keywordflow}{while}((UART6\_FR\_R & 0x0010) != 0);
+        \textcolor{keywordflow}{return} ((uint8)(UART6\_DR\_R & 0xFF)) ;
+    \}
+
+    \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}(uart\_num == 7)
+    \{
+        \textcolor{comment}{/* Wait for new input ,wait until RXFE is 0 */}
+        \textcolor{keywordflow}{while}((UART7\_FR\_R & 0x0010) != 0);
+        \textcolor{keywordflow}{return} ((uint8)(UART7\_DR\_R & 0xFF)) ;
+    \}
+
+
+\}
+\end{DoxyCode}
+ \mbox{\Hypertarget{_u_a_r_t_8h_ab0d6a19096405d3f0e1a47da77093c59}\label{_u_a_r_t_8h_ab0d6a19096405d3f0e1a47da77093c59}} 
+\index{U\+A\+R\+T.\+h@{U\+A\+R\+T.\+h}!uart\+\_\+send\+\_\+byte@{uart\+\_\+send\+\_\+byte}}
+\index{uart\+\_\+send\+\_\+byte@{uart\+\_\+send\+\_\+byte}!U\+A\+R\+T.\+h@{U\+A\+R\+T.\+h}}
+\subsubsection{\texorpdfstring{uart\+\_\+send\+\_\+byte()}{uart\_send\_byte()}}
+{\footnotesize\ttfamily void uart\+\_\+send\+\_\+byte (\begin{DoxyParamCaption}\item[{uint8}]{uart\+\_\+num,  }\item[{uint8}]{data }\end{DoxyParamCaption})}
+
+
+
+send a byte to other device \+: ~\newline
+variable uart\+\_\+num for channel number specified before ~\newline
+variable data for the desired data to be sent ~\newline
+
+
+
+\begin{DoxyCode}
+  \{
+    \textcolor{comment}{/* void function to send byte takes data and uart number  */}
+    \textcolor{keywordflow}{if}(uart\_num == 0)
+    \{
+        \textcolor{comment}{/* Wait for buffer to be not full ,TXFF to be clear */}
+        \textcolor{keywordflow}{while}((UART0\_FR\_R & 0x0020) != 0)\{\}
+        UART0\_DR\_R = data ;
+
+    \}
+
+    \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}(uart\_num == 1)
+    \{
+        \textcolor{comment}{/* Wait for buffer to be not full ,TXFF to be clear */}
+        \textcolor{keywordflow}{while}((UART1\_FR\_R & 0x0020) != 0)\{\}
+        UART1\_DR\_R = data ;
+    \}
+
+    \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}(uart\_num == 2)
+    \{
+        \textcolor{comment}{/* Wait for buffer to be not full ,TXFF to be clear */}
+        \textcolor{keywordflow}{while}((UART2\_FR\_R & 0x0020) != 0);
+        UART2\_DR\_R = data ;
+    \}
+
+    \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}(uart\_num == 3)
+    \{
+        \textcolor{comment}{/* Wait for buffer to be not full ,TXFF to be clear */}
+        \textcolor{keywordflow}{while}((UART3\_FR\_R & 0x0020) != 0);
+        UART3\_DR\_R = data ;
+
+    \}
+
+    \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}(uart\_num == 4)
+    \{
+        \textcolor{comment}{/* Wait for buffer to be not full ,TXFF to be clear */}
+        \textcolor{keywordflow}{while}((UART4\_FR\_R & 0x0020) != 0);
+        UART4\_DR\_R = data ;
+    \}
+
+    \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}(uart\_num == 5)
+    \{
+        \textcolor{comment}{/* Wait for buffer to be not full ,TXFF to be clear */}
+        \textcolor{keywordflow}{while}((UART5\_FR\_R & 0x0020) != 0);
+        UART5\_DR\_R = data ;
+    \}
+
+    \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}(uart\_num == 6)
+    \{
+        \textcolor{comment}{/* Wait for buffer to be not full ,TXFF to be clear */}
+        \textcolor{keywordflow}{while}((UART6\_FR\_R & 0x0020) != 0);
+        UART6\_DR\_R = data ;
+    \}
+
+    \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}(uart\_num == 7)
+    \{
+        \textcolor{comment}{/* Wait for buffer to be not full ,TXFF to be clear */}
+        \textcolor{keywordflow}{while}((UART7\_FR\_R & 0x0020) != 0);
+        UART7\_DR\_R = data ;
+    \}
+\}
+\end{DoxyCode}
+ 
